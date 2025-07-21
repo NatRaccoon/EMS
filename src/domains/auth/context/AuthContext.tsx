@@ -78,6 +78,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   );
 
   const router = useRouter();
+  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
