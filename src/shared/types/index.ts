@@ -123,16 +123,25 @@ export interface PayrollRecord {
   employeeId: string;
   month: string;
   year: number;
+  periodStart: string;
+  periodEnd: string;
   basicSalary: number;
   allowances: number;
   deductions: number;
+  overtime: number;
   bonus: number;
+  tax: number;
   netSalary: number;
   payDate: string;
   status: 'draft' | 'processed' | 'paid';
+  items: PayrollItem[];
+  notes?: string;
+  processedBy?: string;
+  processedAt?: string;
 }
 
 export interface User {
+  photo: string;
   id: string;
   name: string;
   email: string;
@@ -164,3 +173,88 @@ export interface Notification {
 
 export type ViewMode = 'grid' | 'list' | 'calendar';
 export type FilterType = 'all' | 'active' | 'probation' | 'terminated';
+
+// Attendance & Time Tracking Types
+export interface TimeLog {
+  id: string;
+  employeeId: string;
+  date: string; // YYYY-MM-DD
+  startTime: string; // HH:mm or ISO
+  endTime: string; // HH:mm or ISO
+  duration: number; // in minutes
+  type: 'work' | 'meeting' | 'break' | 'overtime' | 'other';
+  project?: string;
+  task?: string;
+  notes?: string;
+  billable?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Timesheet {
+  id: string;
+  employeeId: string;
+  periodStart: string; // YYYY-MM-DD
+  periodEnd: string; // YYYY-MM-DD
+  logs: TimeLog[];
+  totalHours: number;
+  overtimeHours: number;
+  breakMinutes: number;
+  status: 'draft' | 'submitted' | 'approved' | 'rejected';
+  submittedAt?: string;
+  approvedBy?: string;
+  notes?: string;
+}
+
+export type TimeLogCategory = 'work' | 'meeting' | 'break' | 'overtime' | 'other';
+
+// Payroll Management Types
+export interface PayrollPeriod {
+  id: string;
+  month: number;
+  year: number;
+  startDate: string;
+  endDate: string;
+  status: 'draft' | 'processing' | 'completed' | 'paid';
+  processedAt?: string;
+  processedBy?: string;
+  totalAmount: number;
+  employeeCount: number;
+}
+
+export interface PayrollItem {
+  id: string;
+  payrollRecordId: string;
+  type: 'basic_salary' | 'overtime' | 'allowance' | 'bonus' | 'deduction' | 'tax' | 'other';
+  description: string;
+  amount: number;
+  isAddition: boolean; // true for additions, false for deductions
+  category?: string;
+}
+
+export interface Payslip {
+  id: string;
+  payrollRecordId: string;
+  employeeId: string;
+  period: string;
+  issueDate: string;
+  items: PayrollItem[];
+  grossPay: number;
+  totalDeductions: number;
+  netPay: number;
+  notes?: string;
+  status: 'draft' | 'generated' | 'sent' | 'acknowledged';
+}
+
+export interface PayrollSettings {
+  id: string;
+  overtimeRate: number; // multiplier for overtime (e.g., 1.5 for time and a half)
+  taxRate: number; // percentage for tax calculation
+  allowanceTypes: string[]; // types of allowances (housing, transport, etc.)
+  deductionTypes: string[]; // types of deductions (insurance, loans, etc.)
+  payDay: number; // day of month for salary payment
+  currency: string;
+  taxYear: number;
+}
+
+export type PayrollItemType = 'basic_salary' | 'overtime' | 'allowance' | 'bonus' | 'deduction' | 'tax' | 'other';
