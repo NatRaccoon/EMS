@@ -1,9 +1,10 @@
-export interface Employee {
-  id: string
-  name: string
-  role: string
-  status: 'active' | 'inactive'
-  email: string
+export type Employee = {
+  id: string;
+  name: string;
+  role: string;
+  email: string;
+  status: 'active' | 'inactive';
+  departmentId?: string;
 }
 
 export const sampleEmployees: Employee[] = [
