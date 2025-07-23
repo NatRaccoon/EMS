@@ -16,6 +16,8 @@ interface AuthContextType {
   logout: () => void;
   isAuthenticated: boolean;
   hasPermission: (permission: string) => boolean;
+  mustChangePassword: boolean;
+  setPassword: (newPassword: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,45 +30,6 @@ export const useAuth = () => {
   return context;
 };
 
-const mockUsers: User[] = [
-  {
-    id: "1",
-    name: "John Admin",
-    email: "admin@company.com",
-    role: "admin",
-    permissions: ["all"],
-    department: "IT",
-    employeeId: "EMP001",
-  },
-  {
-    id: "2",
-    name: "Sarah HR",
-    email: "hr@company.com",
-    role: "hr",
-    permissions: ["employees", "leave", "payroll", "performance"],
-    department: "Human Resources",
-    employeeId: "EMP002",
-  },
-  {
-    id: "3",
-    name: "Mike Manager",
-    email: "manager@company.com",
-    role: "manager",
-    permissions: ["team", "tasks", "attendance"],
-    department: "Engineering",
-    employeeId: "EMP003",
-  },
-  {
-    id: "4",
-    name: "Alice Employee",
-    email: "employee@company.com",
-    role: "employee",
-    permissions: ["self"],
-    department: "Engineering",
-    employeeId: "EMP004",
-  },
-];
-
 interface AuthProviderProps {
   children: ReactNode;
 }
@@ -76,30 +39,45 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!Cookies.get("token")
   );
-
+  const [mustChangePassword, setMustChangePassword] = useState(false);
   const router = useRouter();
-  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const parsed = JSON.parse(storedUser);
+      setUser(parsed);
       setIsAuthenticated(true);
+      setMustChangePassword(!!parsed.mustChangePassword);
     }
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    const foundUser = mockUsers.find((u) => u.email === email);
-    if (foundUser && password === "password") {
-      // ✅ Set cookie for middleware
+    const res = await fetch('http://localhost:3001/users');
+    const users: User[] = await res.json();
+    const foundUser = users.find((u) => u.email === email);
+    if (foundUser && password === foundUser.password) {
       Cookies.set("token", `${foundUser.role}-token`, { expires: 7 });
-
       setUser(foundUser);
       setIsAuthenticated(true);
+      setMustChangePassword(!!foundUser.mustChangePassword);
       localStorage.setItem("user", JSON.stringify(foundUser));
       return true;
     }
     return false;
+  };
+
+  const setPassword = async (newPassword: string) => {
+    if (!user) return;
+    const res = await fetch(`http://localhost:3001/users/${user.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: newPassword, mustChangePassword: false }),
+    });
+    const updated = await res.json();
+    setUser(updated);
+    setMustChangePassword(false);
+    localStorage.setItem("user", JSON.stringify(updated));
   };
 
   const logout = () => {
@@ -118,7 +96,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, isAuthenticated, hasPermission }}
+      value={{ user, login, logout, isAuthenticated, hasPermission, mustChangePassword, setPassword }}
     >
       {children}
     </AuthContext.Provider>

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/domains/auth/context/AuthContext';
 import { useRouter, usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 
 const Sidebar: React.FC = () => {
@@ -28,7 +29,7 @@ const Sidebar: React.FC = () => {
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3, permission: 'all', route: '/dashboard' },
     { id: 'admin', label: 'Admin Panel', icon: Shield, permission: 'admin', route: '/dashboard/admin' },
     { id: 'employees', label: 'Employees', icon: Users, permission: 'employees', route: '/dashboard/employee' },
-    { id: 'departments', label: 'Departments', icon: Building, permission: 'employees', route: '/dashboard/departments' },
+    { id: 'departments', label: 'Departments', icon: Building, permission: 'employees', route: '/dashboard/department' },
     { id: 'attendance', label: 'Attendance', icon: Clock, permission: 'attendance', route: '/dashboard/attendance' },
     { id: 'leave', label: 'Leave', icon: Calendar, permission: 'leave', route: '/dashboard/leave' },
     { id: 'tasks', label: 'Tasks', icon: CheckSquare, permission: 'tasks', route: '/dashboard/tasks' },
@@ -58,7 +59,8 @@ const Sidebar: React.FC = () => {
     <div className="w-64 bg-white dark:bg-black shadow-lg h-screen flex flex-col fixed left-0 top-0 z-10">
       {/* Logo - Fixed */}
       <div className="p-6 border-b bg-white dark:bg-black flex-shrink-0 flex items-center justify-center">
-        <span className="font-bold text-2xl text-primary tracking-tight">EMS</span>
+        <Image src="/Raccoon.png" alt="EMS" width={300} height={300} className='w-[500px] h-[100px]'/>
+        {/* <span className="font-bold text-2xl text-primary tracking-tight">EMS</span> */}
       </div>
       {/* Navigation - Scrollable */}
       <nav className="flex-1 p-4 space-y-2 overflow-y-auto">

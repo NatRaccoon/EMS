@@ -15,11 +15,12 @@ interface AttendanceState {
   logs: TimeLog[];
   timesheets: Timesheet[];
   timer: TimerState;
+  fetchLogs: () => Promise<void>;
   startTimer: (type: TimeLog['type'], project?: string, task?: string) => void;
   stopTimer: (employeeId: string, notes?: string, billable?: boolean) => void;
-  addLog: (log: TimeLog) => void;
-  updateLog: (id: string, log: Partial<TimeLog>) => void;
-  deleteLog: (id: string) => void;
+  addLog: (log: TimeLog) => Promise<void>;
+  updateLog: (id: string, log: Partial<TimeLog>) => Promise<void>;
+  deleteLog: (id: string) => Promise<void>;
   generateTimesheet: (employeeId: string, periodStart: string, periodEnd: string) => void;
   resetTimer: () => void;
 }
@@ -36,6 +37,11 @@ export const useAttendanceStore = create<AttendanceState>()(
         currentType: 'work',
         project: undefined,
         task: undefined,
+      },
+      fetchLogs: async () => {
+        const res = await fetch('http://localhost:3001/attendanceRecords');
+        const data = await res.json();
+        set({ logs: data });
       },
       startTimer: (type, project, task) => {
         set({
@@ -69,16 +75,35 @@ export const useAttendanceStore = create<AttendanceState>()(
           createdAt: timer.startTime,
           updatedAt: endTime,
         };
+        get().addLog(log);
         set((state) => ({
-          logs: [...state.logs, log],
           timer: { ...state.timer, isRunning: false, endTime },
         }));
       },
-      addLog: (log) => set((state) => ({ logs: [...state.logs, log] })),
-      updateLog: (id, log) => set((state) => ({
-        logs: state.logs.map((l) => (l.id === id ? { ...l, ...log, updatedAt: new Date().toISOString() } : l)),
-      })),
-      deleteLog: (id) => set((state) => ({ logs: state.logs.filter((l) => l.id !== id) })),
+      addLog: async (log) => {
+        const res = await fetch('http://localhost:3001/attendanceRecords', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(log),
+        });
+        const newLog = await res.json();
+        set((state) => ({ logs: [...state.logs, newLog] }));
+      },
+      updateLog: async (id, log) => {
+        const res = await fetch(`http://localhost:3001/attendanceRecords/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...log, updatedAt: new Date().toISOString() }),
+        });
+        const updated = await res.json();
+        set((state) => ({
+          logs: state.logs.map((l) => (l.id === id ? { ...l, ...updated } : l)),
+        }));
+      },
+      deleteLog: async (id) => {
+        await fetch(`http://localhost:3001/attendanceRecords/${id}`, { method: 'DELETE' });
+        set((state) => ({ logs: state.logs.filter((l) => l.id !== id) }));
+      },
       generateTimesheet: (employeeId, periodStart, periodEnd) => {
         const logs = get().logs.filter(
           (log) =>

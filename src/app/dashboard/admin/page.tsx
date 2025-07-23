@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { useContext } from 'react';
 import { AppContext } from '@/domains/auth/context/AppContext';
 import { useAuth } from '@/domains/auth/context/AuthContext';
-import { User, Employee } from '@/shared/types';
+
 import { Users, Building, Shield, Edit, Save, X } from 'lucide-react';
+import { Employee } from '@/types';
 
 interface RoleAssignment {
   employeeId: string;
@@ -43,8 +44,8 @@ export default function AdminPage() {
     setRoleAssignment({
       employeeId: employee.employeeId,
       role: 'employee', // Default role, would need to be fetched from user data
-      department: employee.department,
-      manager: employee.manager === 'N/A' ? '' : employee.manager
+      department: employee.departmentId,
+      manager: employee.managerId
     });
     setIsEditing(true);
   };
@@ -52,15 +53,24 @@ export default function AdminPage() {
   const handleSaveChanges = () => {
     if (selectedEmployee && appCtx) {
       appCtx.updateEmployee(selectedEmployee.id, {
-        department: roleAssignment.department,
-        manager: roleAssignment.manager || 'N/A'
+        departmentId: roleAssignment.department,
+        managerId: roleAssignment.manager || ''
       });
       setIsEditing(false);
       setSelectedEmployee(null);
     }
   };
 
-  const departments = ['IT', 'Human Resources', 'Engineering', 'Marketing', 'Sales', 'Finance'];
+  const departments = appCtx?.departments || [];
+  const employees = appCtx?.employees || [];
+
+  function getDepartmentName(departmentId: string) {
+    return departments.find(d => d.id === departmentId)?.name || 'N/A';
+  }
+  function getManagerName(managerId: string) {
+    const mgr = employees.find(e => e.id === managerId);
+    return mgr ? `${mgr.firstName} ${mgr.lastName}` : 'N/A';
+  }
 
   return (
     <div className="max-w-6xl mx-auto py-8 px-4">
@@ -81,7 +91,7 @@ export default function AdminPage() {
           </div>
           <div className="p-6">
             <div className="space-y-4">
-              {appCtx?.employees.map((employee) => (
+              {employees.map((employee) => (
                 <div key={employee.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
                   <div>
                     <h3 className="font-semibold text-gray-800">
@@ -89,7 +99,7 @@ export default function AdminPage() {
                     </h3>
                     <p className="text-sm text-gray-600">{employee.position}</p>
                     <p className="text-xs text-gray-500">
-                      Department: {employee.department} | Manager: {employee.manager}
+                      Department: {getDepartmentName(employee.departmentId)} | Manager: {getManagerName(employee.managerId)}
                     </p>
                   </div>
                   <button
@@ -116,12 +126,12 @@ export default function AdminPage() {
           <div className="p-6">
             <div className="space-y-4">
               {departments.map((dept) => {
-                const deptEmployees = appCtx?.employees.filter(emp => emp.department === dept) || [];
-                const managers = deptEmployees.filter(emp => emp.manager === 'N/A' || emp.manager === emp.id);
+                const deptEmployees = employees.filter(emp => emp.departmentId === dept.id) || [];
+                const managers = deptEmployees.filter(emp => emp.managerId === 'N/A' || emp.managerId === emp.id);
                 
                 return (
-                  <div key={dept} className="p-4 border border-gray-200 rounded-lg">
-                    <h3 className="font-semibold text-gray-800 mb-2">{dept}</h3>
+                  <div key={dept.id || dept.name} className="p-4 border border-gray-200 rounded-lg">
+                    <h3 className="font-semibold text-gray-800 mb-2">{dept.name}</h3>
                     <div className="text-sm text-gray-600">
                       <p>Employees: {deptEmployees.length}</p>
                       <p>Managers: {managers.length}</p>
@@ -161,25 +171,7 @@ export default function AdminPage() {
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   {departments.map((dept) => (
-                    <option key={dept} value={dept}>{dept}</option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Manager
-                </label>
-                <select
-                  value={roleAssignment.manager}
-                  onChange={(e) => setRoleAssignment({...roleAssignment, manager: e.target.value})}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="">No Manager</option>
-                  {appCtx?.employees.map((emp) => (
-                    <option key={emp.id} value={emp.firstName + ' ' + emp.lastName}>
-                      {emp.firstName} {emp.lastName}
-                    </option>
+                    <option key={dept.id} value={dept.id}>{dept.name}</option>
                   ))}
                 </select>
               </div>
