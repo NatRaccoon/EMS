@@ -7,8 +7,8 @@ export interface Employee {
   email: string;
   phone: string;
   position: string;
-  department: string;
-  manager: string;
+  departmentId: string;
+  managerId: string;
   status: 'active' | 'probation' | 'suspended' | 'terminated';
   startDate: string;
   salary: number;
@@ -39,42 +39,30 @@ export interface Department {
   description: string;
 }
 
-export interface AttendanceRecord {
+export type AttendanceRecord = {
   id: string;
   employeeId: string;
   date: string;
   checkIn: string;
   checkOut?: string;
-  workingHours: number;
   status: 'present' | 'late' | 'absent' | 'partial';
-  location?: string;
-}
+};
 
-export interface LeaveRequest {
+export type LeaveRequest = {
   id: string;
   employeeId: string;
-  type: 'vacation' | 'sick' | 'unpaid' | 'maternity' | 'study' | 'emergency';
+  type: string;
   startDate: string;
   endDate: string;
-  days: number;
-  reason: string;
   status: 'pending' | 'approved' | 'denied';
-  approvedBy?: string;
-  requestDate: string;
-}
+};
 
-export interface Task {
+export type Task = {
   id: string;
   title: string;
-  description: string;
   assignedTo: string;
-  assignedBy: string;
-  dueDate: string;
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  status: 'todo' | 'in-progress' | 'completed';
-  category: string;
-  comments: Comment[];
-}
+  status: string;
+};
 
 export interface Comment {
   id: string;
@@ -93,20 +81,13 @@ export interface Document {
   size: string;
 }
 
-export interface PerformanceReview {
+export type PerformanceReview = {
   id: string;
   employeeId: string;
-  reviewerId: string;
   period: string;
-  type: 'quarterly' | 'annual' | 'probation';
   overallRating: number;
-  goals: Goal[];
-  feedback: string;
-  strengths: string[];
-  areasForImprovement: string[];
-  status: 'draft' | 'completed' | 'acknowledged';
-  reviewDate: string;
-}
+  status: string;
+};
 
 export interface Goal {
   id: string;
@@ -118,27 +99,13 @@ export interface Goal {
   status: 'not-started' | 'in-progress' | 'completed' | 'overdue';
 }
 
-export interface PayrollRecord {
+export type PayrollRecord = {
   id: string;
   employeeId: string;
-  month: string;
-  year: number;
-  periodStart: string;
-  periodEnd: string;
-  basicSalary: number;
-  allowances: number;
-  deductions: number;
-  overtime: number;
-  bonus: number;
-  tax: number;
   netSalary: number;
   payDate: string;
-  status: 'draft' | 'processed' | 'paid';
-  items: PayrollItem[];
-  notes?: string;
-  processedBy?: string;
-  processedAt?: string;
-}
+  status: string;
+};
 
 export interface User {
   photo: string;
@@ -149,27 +116,24 @@ export interface User {
   permissions: string[];
   department: string;
   employeeId?: string;
+  password: string;
 }
 
-export interface Shift {
+export type Shift = {
   id: string;
-  name: string;
-  startTime: string;
-  endTime: string;
-  type: 'fixed' | 'rotating';
-  days: string[];
-}
+  employeeId: string;
+  start: string;
+  end: string;
+};
 
-export interface Notification {
+export type Notification = {
   id: string;
   userId: string;
   title: string;
   message: string;
-  type: 'info' | 'warning' | 'success' | 'error';
   read: boolean;
   timestamp: string;
-  actionUrl?: string;
-}
+};
 
 export type ViewMode = 'grid' | 'list' | 'calendar';
 export type FilterType = 'all' | 'active' | 'probation' | 'terminated';

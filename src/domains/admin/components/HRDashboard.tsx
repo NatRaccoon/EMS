@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import { AppContext } from '@/domains/auth/context/AppContext';
 import { useAuth } from '@/domains/auth/context/AuthContext';
 import { Users, DollarSign, TrendingUp, Plus, Bell, Calendar, FileText } from 'lucide-react';
-import ClockInOutWidget from '@/shared/components/ClockInOutWidget';
+import ClockInOutWidget from '@/presentation/components/ClockInOutWidget';
+
 
 const HRDashboard: React.FC = () => {
   const appCtx = useContext(AppContext);

@@ -12,32 +12,55 @@ type DepartmentAuditLog = {
 type DepartmentState = {
   departments: Department[];
   auditLog: DepartmentAuditLog[];
-  addDepartment: (dept: Department) => void;
-  updateDepartment: (id: string, data: Partial<Department>) => void;
-  deleteDepartment: (id: string) => void;
+  fetchDepartments: () => Promise<void>;
+  addDepartment: (dept: Department) => Promise<void>;
+  updateDepartment: (id: string, data: Partial<Department>) => Promise<void>;
+  deleteDepartment: (id: string) => Promise<void>;
   getAuditLog: () => DepartmentAuditLog[];
 };
 
 export const useDepartmentStore = create<DepartmentState>((set, get) => ({
   departments: [],
   auditLog: [],
-  addDepartment: (dept) => set((state) => ({
-    departments: [...state.departments, dept],
-    auditLog: [
-      ...state.auditLog,
-      {
-        id: `${dept.id}-add-${Date.now()}`,
-        type: 'add',
-        departmentId: dept.id,
-        timestamp: new Date().toISOString(),
-        summary: `Added department '${dept.name}'`,
-      },
-    ],
-  })),
-  updateDepartment: (id, data) => set((state) => {
-    const dept = state.departments.find((d) => d.id === id);
-    return {
-      departments: state.departments.map((d) => d.id === id ? { ...d, ...data } : d),
+
+  fetchDepartments: async () => {
+    const res = await fetch('http://localhost:3001/departments');
+    const data = await res.json();
+    set({ departments: data });
+  },
+
+  addDepartment: async (dept) => {
+    const res = await fetch('http://localhost:3001/departments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dept),
+    });
+    const newDept = await res.json();
+    set((state) => ({
+      departments: [...state.departments, newDept],
+      auditLog: [
+        ...state.auditLog,
+        {
+          id: `${newDept.id}-add-${Date.now()}`,
+          type: 'add',
+          departmentId: newDept.id,
+          timestamp: new Date().toISOString(),
+          summary: `Added department '${newDept.name}'`,
+        },
+      ],
+    }));
+  },
+
+  updateDepartment: async (id, data) => {
+    const res = await fetch(`http://localhost:3001/departments/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const updated = await res.json();
+    const dept = get().departments.find((d) => d.id === id);
+    set((state) => ({
+      departments: state.departments.map((d) => d.id === id ? { ...d, ...updated } : d),
       auditLog: dept
         ? [
             ...state.auditLog,
@@ -50,11 +73,13 @@ export const useDepartmentStore = create<DepartmentState>((set, get) => ({
             },
           ]
         : state.auditLog,
-    };
-  }),
-  deleteDepartment: (id) => set((state) => {
-    const dept = state.departments.find((d) => d.id === id);
-    return {
+    }));
+  },
+
+  deleteDepartment: async (id) => {
+    await fetch(`http://localhost:3001/departments/${id}`, { method: 'DELETE' });
+    const dept = get().departments.find((d) => d.id === id);
+    set((state) => ({
       departments: state.departments.filter((d) => d.id !== id),
       auditLog: dept
         ? [
@@ -68,7 +93,8 @@ export const useDepartmentStore = create<DepartmentState>((set, get) => ({
             },
           ]
         : state.auditLog,
-    };
-  }),
+    }));
+  },
+
   getAuditLog: () => get().auditLog,
 })); 

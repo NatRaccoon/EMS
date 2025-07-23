@@ -19,18 +19,18 @@ export default function EmployeeTable({ onEdit, onView, renderAddButton, renderN
   // Filtered and sorted employees
   const filtered = employees.filter(emp => {
     if (statusFilter !== 'all' && emp.status !== statusFilter) return false
-    if (roleFilter !== 'all' && emp.role !== roleFilter) return false
+    if (roleFilter !== 'all' && emp.position !== roleFilter) return false
     if (departmentFilter !== 'all') {
       if (departmentFilter === 'none' && emp.departmentId) return false
       if (departmentFilter !== 'none' && emp.departmentId !== departmentFilter) return false
     }
-    if (search.trim() && !emp.name.toLowerCase().includes(search.trim().toLowerCase())) return false
+    if (search.trim() && !(`${emp.firstName} ${emp.lastName}`.toLowerCase().includes(search.trim().toLowerCase()))) return false
     return true
   })
   const sorted = [...filtered].sort((a, b) => {
     let cmp = 0
-    if (sortBy === 'name') cmp = a.name.localeCompare(b.name)
-    else if (sortBy === 'role') cmp = a.role.localeCompare(b.role)
+    if (sortBy === 'name') cmp = (`${a.firstName} ${a.lastName}`).localeCompare(`${b.firstName} ${b.lastName}`)
+    else if (sortBy === 'role') cmp = a.position.localeCompare(b.position)
     else if (sortBy === 'status') cmp = a.status.localeCompare(b.status)
     return sortDir === 'asc' ? cmp : -cmp
   })
@@ -48,7 +48,7 @@ export default function EmployeeTable({ onEdit, onView, renderAddButton, renderN
 
   // Unique roles for filter
   const uniqueRoles = useMemo(() => {
-    const set = new Set(employees.map(e => e.role))
+    const set = new Set(employees.map(e => e.position))
     return Array.from(set)
   }, [employees])
   // Unique departments for filter
@@ -88,7 +88,7 @@ export default function EmployeeTable({ onEdit, onView, renderAddButton, renderN
   const handleExportSelected = () => {
     const rows = [
       ['Name', 'Email', 'Role', 'Status'],
-      ...employees.filter(emp => selected.includes(emp.id)).map(emp => [emp.name, emp.email, emp.role, emp.status])
+      ...employees.filter(emp => selected.includes(emp.id)).map(emp => [emp.firstName + ' ' + emp.lastName, emp.email, emp.position, emp.status])
     ]
     const csv = rows.map(r => r.map(v => `"${(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\n')
     const blob = new Blob([csv], { type: 'text/csv' })
@@ -148,7 +148,7 @@ export default function EmployeeTable({ onEdit, onView, renderAddButton, renderN
             onClick={() => {
               const rows = [
                 ['Name', 'Email', 'Role', 'Status'],
-                ...sorted.map(emp => [emp.name, emp.email, emp.role, emp.status])
+                ...sorted.map(emp => [emp.firstName + ' ' + emp.lastName, emp.email, emp.position, emp.status])
               ];
               const csv = rows.map(r => r.map(v => `"${(v ?? '').replace(/"/g, '""')}"`).join(',')).join('\n');
               const blob = new Blob([csv], { type: 'text/csv' });
@@ -194,16 +194,16 @@ export default function EmployeeTable({ onEdit, onView, renderAddButton, renderN
                 </td>
                 <td className="px-4 py-2 border flex items-center gap-3 min-w-[160px]">
                   {/* Avatar with initials and color */}
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-lg uppercase ${getAvatarColor(emp.name || emp.id)}`}>
-                    {emp.name ? emp.name.split(' ').map(n => n[0]).join('').slice(0,2) : '?'}
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-lg uppercase ${getAvatarColor(emp.firstName + ' ' + emp.lastName || emp.id)}`}>
+                    {emp.firstName && emp.lastName ? (emp.firstName[0] + emp.lastName[0]) : '?'}
                   </div>
                   <span className="truncate">
-                    {renderNameCell ? renderNameCell(emp) : emp.name}
+                    {renderNameCell ? renderNameCell(emp) : `${emp.firstName} ${emp.lastName}`}
                   </span>
                 </td>
                 <td className="px-4 py-2 border min-w-[180px] truncate">{emp.email}</td>
                 <td className="px-4 py-2 border min-w-[140px]">{getDeptName(emp.departmentId)}</td>
-                <td className="px-4 py-2 border capitalize min-w-[120px]">{emp.role}</td>
+                <td className="px-4 py-2 border capitalize min-w-[120px]">{emp.position}</td>
                 <td className="px-4 py-2 border min-w-[100px]">
                   <span className={`px-2 py-1 text-xs rounded-full font-semibold ${emp.status === 'active' ? 'bg-primary/20 text-primary' : 'bg-red-100 text-red-600'}`}>
                     {emp.status ? emp.status.charAt(0).toUpperCase() + emp.status.slice(1) : ''}

@@ -1,10 +1,11 @@
 "use client"
 import { useDepartmentStore } from '@/domains/department/slices/department.slice'
 import { useEmployeeStore } from '@/domains/employee/slices/employee.slice'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, Users, Download } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/domains/auth/context/AuthContext';
+import Select from 'react-select';
 
 function exportDepartmentsToCSV(departments: any[], employees: any[]) {
   const header = ['Department Name', 'Manager', 'Members']
@@ -34,7 +35,7 @@ function stringToColor(str: string) {
 }
 
 export default function DepartmentPage() {
-  const { departments, addDepartment, updateDepartment, deleteDepartment } = useDepartmentStore()
+  const { departments, fetchDepartments, addDepartment, updateDepartment, deleteDepartment } = useDepartmentStore()
   const { employees } = useEmployeeStore()
   const { user } = useAuth();
   const isHRorAdmin = user && (user.role === 'admin' || user.role === 'hr');
@@ -44,7 +45,17 @@ export default function DepartmentPage() {
   const [search, setSearch] = useState('')
   const [managerFilter, setManagerFilter] = useState('')
   const [selected, setSelected] = useState<string[]>([])
+  const [users, setUsers] = useState<any[]>([])
+  const [managerSearch, setManagerSearch] = useState('');
+  const [parentDeptSearch, setParentDeptSearch] = useState('');
   const router = useRouter()
+
+  useEffect(() => {
+    fetchDepartments();
+    fetch('http://localhost:3001/users')
+      .then(res => res.json())
+      .then(setUsers);
+  }, [fetchDepartments]);
 
   // Filtered departments
   const filteredDepartments = departments.filter(dept => {
@@ -116,7 +127,7 @@ export default function DepartmentPage() {
               {dept.name}
             </span>
             <span className="text-gray-500 ml-2">{members.length} member{members.length !== 1 ? 's' : ''}</span>
-            {dept.managerId && <span className="ml-2 text-xs bg-primary/10 text-primary px-2 py-1 rounded">Manager: {employees.find((e: any) => e.id === dept.managerId)?.name || dept.managerId}</span>}
+            {dept.managerId && <span className="ml-2 text-xs bg-primary/10 text-primary px-2 py-1 rounded">Manager: {(() => { const mgr = employees.find((e: any) => e.id === dept.managerId); return mgr ? `${mgr.firstName} ${mgr.lastName}` : dept.managerId })()}</span>}
           </div>
           {isHRorAdmin && (
             <div className="flex gap-2 ml-auto">
@@ -150,7 +161,7 @@ export default function DepartmentPage() {
           >
             <option value="">All Managers</option>
             {employees.map(e => (
-              <option key={e.id} value={e.id}>{e.name}</option>
+              <option key={e.id} value={e.id}>{e.firstName} {e.lastName}</option>
             ))}
           </select>
           {isHRorAdmin && <button className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded font-semibold shadow hover:bg-primary-dark transition" onClick={() => { setShowForm(true); setEditDept(null); setForm({ name: '', managerId: '', parentId: '' }) }}><Plus size={20}/> Add Department</button>}
@@ -191,19 +202,25 @@ export default function DepartmentPage() {
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">Manager (optional)</label>
-              <select className="border rounded px-2 py-1 w-full" value={form.managerId} onChange={e => setForm(f => ({ ...f, managerId: e.target.value }))}>
-                <option value="">None</option>
-                {employees.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
-              </select>
+              <Select
+                classNamePrefix="react-select"
+                options={users.map(u => ({ value: u.id, label: `${u.name} (${u.role})` }))}
+                value={users.find(u => u.id === form.managerId) ? { value: form.managerId, label: `${users.find(u => u.id === form.managerId)?.name} (${users.find(u => u.id === form.managerId)?.role})` } : null}
+                onChange={(option: { value: string; label: string } | null) => setForm(f => ({ ...f, managerId: option ? option.value : '' }))}
+                isClearable
+                placeholder="Select or search for a manager..."
+              />
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">Parent Department (optional)</label>
-              <select className="border rounded px-2 py-1 w-full" value={form.parentId} onChange={e => setForm(f => ({ ...f, parentId: e.target.value }))}>
-                <option value="">None</option>
-                {departments.filter(d => !editDept || d.id !== editDept.id).map(d => (
-                  <option key={d.id} value={d.id}>{d.name}</option>
-                ))}
-              </select>
+              <Select
+                classNamePrefix="react-select"
+                options={departments.filter(d => !editDept || d.id !== editDept.id).map(d => ({ value: d.id, label: d.name }))}
+                value={departments.find(d => d.id === form.parentId) ? { value: form.parentId, label: departments.find(d => d.id === form.parentId)?.name || '' } : null}
+                onChange={(option: { value: string; label: string } | null) => setForm(f => ({ ...f, parentId: option ? option.value : '' }))}
+                isClearable
+                placeholder="Select or search for a parent department..."
+              />
             </div>
             <button type="submit" className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-xl w-full mt-2 text-lg font-semibold">{editDept ? 'Save Changes' : 'Add Department'}</button>
           </form>

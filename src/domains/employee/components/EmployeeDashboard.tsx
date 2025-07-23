@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import { Clock, FileText, TrendingUp, User, Bell, Calendar, LogOut, Edit2 } from 'lucide-react';
 import { useAuth } from '@/domains/auth/context/AuthContext';
 import { AppContext } from '@/domains/auth/context/AppContext';
-import ClockInOutWidget from '@/shared/components/ClockInOutWidget';
+import ClockInOutWidget from '@/presentation/components/ClockInOutWidget';
+
 
 const EmployeeDashboard: React.FC = () => {
   const { user } = useAuth();

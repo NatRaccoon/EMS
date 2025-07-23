@@ -1,1 +1,180 @@
-{}
+{
+  "users": [
+    {
+      "id": "OtUnbSc",
+      "name": "Nathaniel Conduah",
+      "email": "nathaniel.conduah@coderaccoon.com",
+      "role": "employee",
+      "permissions": [
+        "self"
+      ],
+      "department": "IT",
+      "password": "natraccoon",
+      "photo": "",
+      "mustChangePassword": false
+    },
+    {
+      "id": "UJxyVoR",
+      "name": "Theophilus Paintsil",
+      "email": "theo.paintsil@coderaccoon.com",
+      "role": "employee",
+      "permissions": [
+        "self"
+      ],
+      "department": "IT",
+      "password": "theophiluspaintsil",
+      "photo": "",
+      "mustChangePassword": true
+    },
+    {
+      "id": "DDOZ-R7",
+      "name": "Desmond Tate",
+      "email": "desmond@gmail.com",
+      "role": "employee",
+      "permissions": [
+        "self"
+      ],
+      "department": "IT",
+      "password": "desmondtate",
+      "photo": "",
+      "mustChangePassword": true
+    }
+  ],
+  "employees": [
+    {
+      "firstName": "Nathaniel",
+      "lastName": "Conduah",
+      "email": "nathaniel.conduah@coderaccoon.com",
+      "position": "Senior Developer",
+      "departmentId": "1",
+      "id": "OtUnbSc"
+    },
+    {
+      "firstName": "Theophilus",
+      "lastName": "Paintsil",
+      "email": "theo.paintsil@coderaccoon.com",
+      "position": "Expert Developer",
+      "departmentId": "1",
+      "id": "UJxyVoR"
+    },
+    {
+      "firstName": "Desmond",
+      "lastName": "Tate",
+      "email": "desmond@gmail.com",
+      "position": "Developer",
+      "departmentId": "1",
+      "id": "DDOZ-R7"
+    }
+  ],
+  "departments": [
+    {
+      "id": "1",
+      "name": "IT",
+      "head": "John Admin",
+      "employeeCount": 5,
+      "description": "Information Technology"
+    },
+    {
+      "id": "2",
+      "name": "Human Resources",
+      "head": "Sarah Johnson",
+      "employeeCount": 3,
+      "description": "Human Resources Management"
+    },
+    {
+      "id": "3",
+      "name": "Engineering",
+      "head": "Mike Chen",
+      "employeeCount": 12,
+      "description": "Software Engineering"
+    },
+    {
+      "id": "4",
+      "name": "Marketing",
+      "head": "Alice Smith",
+      "employeeCount": 8,
+      "description": "Marketing and Sales"
+    },
+    {
+      "id": "1753120303251",
+      "name": "Tech Department",
+      "managerId": "",
+      "parentId": ""
+    }
+  ],
+  "attendanceRecords": [],
+  "leaveRequests": [],
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Update Employee Database",
+      "description": "Migrate employee records to new system",
+      "assignedTo": "EMP001",
+      "assignedBy": "Sarah Johnson",
+      "dueDate": "2024-02-15",
+      "priority": "high",
+      "status": "in-progress",
+      "category": "IT",
+      "comments": []
+    },
+    {
+      "id": "2",
+      "title": "Q1 Performance Reviews",
+      "description": "Complete quarterly performance evaluations",
+      "assignedTo": "EMP002",
+      "assignedBy": "John Admin",
+      "dueDate": "2024-03-31",
+      "priority": "medium",
+      "status": "todo",
+      "category": "HR",
+      "comments": []
+    }
+  ],
+  "performanceReviews": [],
+  "payrollRecords": [],
+  "notifications": [],
+  "shifts": [
+    {
+      "id": "1",
+      "name": "Day Shift",
+      "startTime": "09:00",
+      "endTime": "17:00",
+      "type": "fixed",
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Early Shift",
+      "startTime": "08:30",
+      "endTime": "16:30",
+      "type": "fixed",
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Flexible Shift",
+      "startTime": "10:00",
+      "endTime": "18:00",
+      "type": "rotating",
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ]
+    }
+  ]
+}

@@ -5,11 +5,15 @@ import EmployeeTable from '@/domains/employee/components/employee.table'
 import { Employee } from '@/domains/employee/types/employee.data'
 import { useState } from 'react'
 import Link from 'next/link'
+import { useEmployeeStore } from '@/domains/employee/slices/employee.slice'
+import { useEffect } from 'react'
 
 
 export default function EmployeePage() {
   const [editEmp, setEditEmp] = useState<Employee | undefined>()
   const [viewEmp, setViewEmp] = useState<Employee | undefined>()
+  const { fetchEmployees } = useEmployeeStore();
+  useEffect(() => { fetchEmployees(); }, [fetchEmployees]);
 
   return (
     <div className="p-4">
@@ -23,7 +27,7 @@ export default function EmployeePage() {
       )} 
       renderNameCell={(emp: Employee) => (
         <Link href={`/dashboard/employee/${emp.id}`} className="truncate font-semibold text-primary hover:underline">
-          {emp.name}
+          {emp.firstName} {emp.lastName}
         </Link>
       )}
       />
