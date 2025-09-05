@@ -13,7 +13,7 @@ const ManagerDashboard: React.FC = () => {
   const employee = appCtx.employees.find(e => e.employeeId === user.employeeId);
   const avatar = employee?.photo || '/public/file.svg';
   // Team: employees managed by this manager
-  const team = appCtx.employees.filter(e => e.manager === user.name || e.manager === user.employeeId);
+  const team = appCtx.employees.filter(e => e.managerId === user.name || e.managerId === user.employeeId);
   const teamSize = team.length;
   // Team attendance: count present today
   const today = new Date().toISOString().slice(0, 10);

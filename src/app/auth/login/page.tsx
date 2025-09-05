@@ -81,7 +81,7 @@ const handleChangePassword = async (e: React.FormEvent) => {
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden">
         <div className="flex">
           {/* Left Side - Branding */}
-          <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 p-12 flex-col justify-center">
+          <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-green-500 to-green-600 p-12 flex-col justify-center">
             <div className="text-white">
               <div className="flex items-center mb-8">
                 <Building size={48} className="mr-4" />
@@ -147,7 +147,7 @@ const handleChangePassword = async (e: React.FormEvent) => {
                     <button
                       type="submit"
                       disabled={isChangingPassword}
-                      className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       {isChangingPassword ? 'Changing Password...' : 'Change Password'}
                     </button>
@@ -200,7 +200,7 @@ const handleChangePassword = async (e: React.FormEvent) => {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="w-full bg-green-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       {isLoading ? 'Signing in...' : 'Sign In'}
                     </button>

@@ -17,14 +17,14 @@
       "id": "UJxyVoR",
       "name": "Theophilus Paintsil",
       "email": "theo.paintsil@coderaccoon.com",
-      "role": "employee",
+      "role": "manager",
       "permissions": [
         "self"
       ],
       "department": "IT",
-      "password": "theophiluspaintsil",
+      "password": "theoraccoon",
       "photo": "",
-      "mustChangePassword": true
+      "mustChangePassword": false
     },
     {
       "id": "DDOZ-R7",
@@ -38,6 +38,20 @@
       "password": "desmondtate",
       "photo": "",
       "mustChangePassword": true
+    },
+    {
+      "id": "1",
+      "name": "John Admin",
+      "email": "admin@company.com",
+      "role": "admin",
+      "permissions": [
+        "all"
+      ],
+      "department": "IT",
+      "employeeId": "EMP100",
+      "password": "admin1234",
+      "photo": "",
+      "mustChangePassword": false
     }
   ],
   "employees": [
