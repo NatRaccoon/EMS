@@ -1,6 +1,6 @@
 "use client"
 
-import { useAuth } from "@/domains/auth/context/AuthContext";
+import { useAuth } from "@/features/auth/context/AuthContext";
 import { redirect, useRouter } from "next/navigation";
 
 export default function Home() {

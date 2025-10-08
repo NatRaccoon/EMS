@@ -1,8 +1,8 @@
 "use client"
 import React from 'react';
-import { useAuth } from '@/domains/auth/context/AuthContext';
+import { useAuth } from '@/features/auth/context/AuthContext';
 import { useContext } from 'react';
-import { AppContext } from '@/domains/auth/context/AppContext';
+import { AppContext } from '@/features/auth/context/AppContext';
 import { 
   Users, 
   Clock, 
@@ -15,10 +15,10 @@ import {
   Plus,
   Settings
 } from 'lucide-react';
-import AdminDashboard from '../../domains/admin/components/AdminDashboard';
-import HRDashboard from '../../domains/admin/components/HRDashboard';
-import ManagerDashboard from '../../domains/admin/components/ManagerDashboard';
-import EmployeeDashboard from '../../domains/employee/components/EmployeeDashboard';
+import AdminDashboard from '@/features/admin/components/AdminDashboard';
+import HRDashboard from '@/features/admin/components/HRDashboard';
+import ManagerDashboard from '@/features/admin/components/ManagerDashboard';
+import EmployeeDashboard from '@/features/employee/components/EmployeeDashboard';
 
 export default function DashboardPage() {
   const { user } = useAuth();

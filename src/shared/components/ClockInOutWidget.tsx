@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { useAttendanceContext } from '@/domains/attendance/context/AttendanceContext';
-import ManualEntryForm from '@/domains/attendance/components/ManualEntryForm';
+import { useAttendanceContext } from '@/features/attendance/context/AttendanceContext';
+import ManualEntryForm from '@/features/attendance/components/ManualEntryForm';
 import { Clock, Edit2 } from 'lucide-react';
 
 function formatElapsed(seconds: number) {
@@ -27,7 +27,9 @@ export default function ClockInOutWidget({ employeeId, compact = false }: { empl
     } else {
       setElapsed(0);
     }
-    return () => interval && clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [timer.isRunning, timer.startTime]);
 
   // Today's total work duration

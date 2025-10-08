@@ -1,8 +1,8 @@
 "use client"
 import React, { useState } from 'react';
 import { useContext } from 'react';
-import { AppContext } from '@/domains/auth/context/AppContext';
-import { useAuth } from '@/domains/auth/context/AuthContext';
+import { AppContext } from '@/features/auth/context/AppContext';
+import { useAuth } from '@/features/auth/context/AuthContext';
 
 import { Users, Building, Shield, Edit, Save, X } from 'lucide-react';
 import { Employee } from '@/types';

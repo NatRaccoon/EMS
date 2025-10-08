@@ -1,11 +1,11 @@
 'use client'
-import EmployeeDetailModal from '@/domains/employee/components/employee.detail.modal'
-import EmployeeFormModal from '@/domains/employee/components/employee.form.modal'
-import EmployeeTable from '@/domains/employee/components/employee.table'
-import { Employee } from '@/domains/employee/types/employee.data'
+import EmployeeDetailModal from '@/features/employee/components/employee.detail.modal'
+import EmployeeFormModal from '@/features/employee/components/employee.form.modal'
+import EmployeeTable from '@/features/employee/components/employee.table'
+import { Employee } from '@/features/employee/types/employee.data'
 import { useState } from 'react'
 import Link from 'next/link'
-import { useEmployeeStore } from '@/domains/employee/slices/employee.slice'
+import { useEmployeeStore } from '@/features/employee/slices/employee.slice'
 import { useEffect } from 'react'
 
 

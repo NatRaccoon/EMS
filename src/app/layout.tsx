@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "@/styles/globals.css";
-import { AuthProvider } from "@/domains/auth/context/AuthContext";
-import { AppProvider } from "@/domains/auth/context/AppContext";
-import { AttendanceProvider } from "@/domains/attendance/context/AttendanceContext";
-import { PayrollProvider } from "@/domains/payroll/context/PayrollContext";
+import { AuthProvider } from "@/features/auth/context/AuthContext";
+import { AppProvider } from "@/features/auth/context/AppContext";
+import { AttendanceProvider } from "@/features/attendance/context/AttendanceContext";
+import { PayrollProvider } from "@/features/payroll/context/PayrollContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

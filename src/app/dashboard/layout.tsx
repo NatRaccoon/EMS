@@ -1,4 +1,4 @@
-import LayoutShell from "@/presentation/components/LayoutShell";
+import LayoutShell from "@/shared/components/LayoutShell";
 
 
 

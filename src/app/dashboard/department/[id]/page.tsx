@@ -1,7 +1,7 @@
 "use client"
 import { useParams, useRouter } from 'next/navigation';
-import { useDepartmentStore } from '@/domains/department/slices/department.slice';
-import { useEmployeeStore } from '@/domains/employee/slices/employee.slice';
+import { useDepartmentStore } from '@/features/department/slices/department.slice';
+import { useEmployeeStore } from '@/features/employee/slices/employee.slice';
 import { Users, ArrowLeft, User2 } from 'lucide-react';
 
 export default function DepartmentDetailsPage() {

@@ -4,7 +4,7 @@ import { useEmployeeStore } from '../slices/employee.slice'
 import { Employee } from '@/types/index'
 import { useDepartmentStore } from '../../department/slices/department.slice'
 import Select from 'react-select';
-import { AppContext } from '@/domains/auth/context/AppContext';
+import { AppContext } from '@/features/auth/context/AppContext';
 
 
 export default function EmployeeFormModal({ employee, onClose }: { employee?: Employee, onClose: () => void }) {

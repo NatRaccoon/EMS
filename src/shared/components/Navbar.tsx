@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext, useState, useRef } from 'react';
-import { useAuth } from '@/domains/auth/context/AuthContext';
-import { AppContext } from '@/domains/auth/context/AppContext';
+import { useAuth } from '@/features/auth/context/AuthContext';
+import { AppContext } from '@/features/auth/context/AppContext';
 import { Bell, Search, Sun, Moon, LogOut, User, Settings, Edit2 } from 'lucide-react';
 
 const Navbar: React.FC = () => {

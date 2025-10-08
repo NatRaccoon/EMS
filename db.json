@@ -117,7 +117,19 @@
     }
   ],
   "attendanceRecords": [],
-  "leaveRequests": [],
+  "leaveRequests": [
+    {
+      "id": "1759933165295",
+      "employeeId": "OtUnbSc",
+      "type": "sick",
+      "startDate": "2025-10-09",
+      "endDate": "2025-10-15",
+      "days": 1,
+      "reason": "",
+      "status": "pending",
+      "requestDate": "2025-10-08T14:19:25.295Z"
+    }
+  ],
   "tasks": [
     {
       "id": "1",

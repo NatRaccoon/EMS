@@ -1,7 +1,7 @@
 "use client"
 import { useParams, useRouter } from 'next/navigation'
-import { useEmployeeStore } from '@/domains/employee/slices/employee.slice'
-import { Employee } from '@/domains/employee/types/employee.data'
+import { useEmployeeStore } from '@/features/employee/slices/employee.slice'
+import { Employee } from '@/features/employee/types/employee.data'
 import { useMemo, useState } from 'react'
 import { Mail, Phone, User, Briefcase, FileText, Activity, Edit, Power } from 'lucide-react'
 

@@ -1,7 +1,7 @@
 // components/LayoutShell.tsx
 'use client';
 
-import { useAuth } from '@/domains/auth/context/AuthContext';
+import { useAuth } from '@/features/auth/context/AuthContext';
 import { useState } from 'react';
 import Sidebar from './sidebar';
 import Navbar from './Navbar';

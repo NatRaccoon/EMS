@@ -1,10 +1,10 @@
 "use client"
 import React, { useState } from 'react';
-import { PayrollProvider,  usePayrollContext } from '@/domains/payroll/context/PayrollContext';
-// import { usePayrollContext } from '@/domains/payroll/context/PayrollContext'; // ✅ adjust the path based on your
-import { useAuth } from '@/domains/auth/context/AuthContext';
+import { PayrollProvider,  usePayrollContext } from '@/features/payroll/context/PayrollContext';
+// import { usePayrollContext } from '@/features/payroll/context/PayrollContext'; // ✅ adjust the path based on your
+import { useAuth } from '@/features/auth/context/AuthContext';
 import { useContext } from 'react';
-import { AppContext } from '@/domains/auth/context/AppContext';
+import { AppContext } from '@/features/auth/context/AppContext';
 import { 
   DollarSign, 
   FileText, 
@@ -30,13 +30,13 @@ const TAB_DESCRIPTIONS: Record<string, string> = {
   settings: 'Configure payroll settings and parameters.',
 };
 
-import { PayrollProcessingComponent } from '@/domains/payroll/components/payroll-processing.component';
+import { PayrollProcessingComponent } from '@/features/payroll/components/payroll-processing.component';
 
 function PayrollProcessingTab() {
   return <PayrollProcessingComponent />;
 }
 
-import { PayslipComponent } from '@/domains/payroll/components/payslip.component';
+import { PayslipComponent } from '@/features/payroll/components/payslip.component';
 
 function PayslipsTab() {
   const { payslips, payrollRecords } = usePayrollContext();

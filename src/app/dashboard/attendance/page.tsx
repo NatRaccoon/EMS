@@ -1,15 +1,15 @@
 "use client"
 import React, { useState } from 'react';
-import { AttendanceProvider } from '@/domains/attendance/context/AttendanceContext';
-import TimerWidget from '@/domains/attendance/components/TimerWidget';
-import ManualEntryForm from '@/domains/attendance/components/ManualEntryForm';
-import LogList from '@/domains/attendance/components/LogList';
-import TimesheetView from '@/domains/attendance/components/TimesheetView';
-import ReportsDashboard from '@/domains/attendance/components/ReportsDashboard';
-import { useAuth } from '@/domains/auth/context/AuthContext';
+import { AttendanceProvider } from '@/features/attendance/context/AttendanceContext';
+import TimerWidget from '@/features/attendance/components/TimerWidget';
+import ManualEntryForm from '@/features/attendance/components/ManualEntryForm';
+import LogList from '@/features/attendance/components/LogList';
+import TimesheetView from '@/features/attendance/components/TimesheetView';
+import ReportsDashboard from '@/features/attendance/components/ReportsDashboard';
+import { useAuth } from '@/features/auth/context/AuthContext';
 import { Clock, Edit, List, FileText, BarChart2, Users, UserCheck } from 'lucide-react';
 import { useContext } from 'react';
-import { AppContext } from '@/domains/auth/context/AppContext';
+import { AppContext } from '@/features/auth/context/AppContext';
 import { User } from '@/shared/types';
 
 const TABS = [

@@ -15,7 +15,7 @@ import {
   Bell,
   Shield
 } from 'lucide-react';
-import { useAuth } from '@/domains/auth/context/AuthContext';
+import { useAuth } from '@/features/auth/context/AuthContext';
 import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
 

@@ -1,10 +1,10 @@
 "use client"
-import { useDepartmentStore } from '@/domains/department/slices/department.slice'
-import { useEmployeeStore } from '@/domains/employee/slices/employee.slice'
+import { useDepartmentStore } from '@/features/department/slices/department.slice'
+import { useEmployeeStore } from '@/features/employee/slices/employee.slice'
 import { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, Users, Download } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/domains/auth/context/AuthContext';
+import { useAuth } from '@/features/auth/context/AuthContext';
 import Select from 'react-select';
 
 function exportDepartmentsToCSV(departments: any[], employees: any[]) {

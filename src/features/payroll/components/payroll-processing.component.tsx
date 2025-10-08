@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { usePayrollContext } from '../context/PayrollContext';
 import { useContext } from 'react';
-import { AppContext } from '@/domains/auth/context/AppContext';
-import { useAttendanceContext } from '@/domains/attendance/context/AttendanceContext';
+import { AppContext } from '@/features/auth/context/AppContext';
+import { useAttendanceContext } from '@/features/attendance/context/AttendanceContext';
 import { 
   Calendar, 
   Users, 

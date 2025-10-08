@@ -1,10 +1,10 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { useAuthStore } from '@/domains/auth/slices/auth.slice'
+import { useAuthStore } from '@/features/auth/slices/auth.slice'
 import React, { useState } from 'react';
 
 
-import { useAuth } from '@/domains/auth/context/AuthContext';
+import { useAuth } from '@/features/auth/context/AuthContext';
 import { Building, Mail, User, Lock } from 'lucide-react';
 
 
